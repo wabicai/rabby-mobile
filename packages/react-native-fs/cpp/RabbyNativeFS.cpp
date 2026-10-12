@@ -2031,9 +2031,7 @@ jsi::Value makeCreateAsyncReadStreamFunction(
 
 void install(
     jsi::Runtime& runtime,
-    std::shared_ptr<react::CallInvoker> jsCallInvoker,
-    std::string cacheDirectory,
-    SafeMediaDownloadStarter downloadStarter) {
+    std::shared_ptr<react::CallInvoker> jsCallInvoker) {
   logNativeFsInstall();
 
   auto fs = jsi::Object(runtime);
@@ -2240,7 +2238,7 @@ void install(
     fs.setProperty(
         runtime,
         "createAsyncReadStream",
-        makeCreateAsyncReadStreamFunction(runtime, jsCallInvoker));
+        makeCreateAsyncReadStreamFunction(runtime, std::move(jsCallInvoker)));
   }
 
   fs.setProperty(
@@ -2286,13 +2284,6 @@ void install(
             auto path = requirePath(runtime, arguments, count);
             return jsi::Value(access(path.c_str(), F_OK) == 0);
           }));
-
-  installSafeMedia(
-      runtime,
-      fs,
-      jsCallInvoker,
-      std::move(cacheDirectory),
-      std::move(downloadStarter));
 
   runtime.global().setProperty(runtime, "__RabbyNativeFS", std::move(fs));
 }

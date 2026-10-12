@@ -26,7 +26,6 @@ import {
   DevUIFormShowCase,
   DevUINotifications,
   DevUIPermissions,
-  DevUISafeSvgMedia,
   DevUIScreenContainerShowCase,
   DevUIToast,
 } from '@/perfs/loadables/testkitsNavigatorScreens';
@@ -76,17 +75,6 @@ export function TestkitsNavigator() {
       <Stack.Screen
         name={RootNames.DevUIComponents2024ShowCase}
         component={DevUIComponents2024ShowCase}
-      />
-      <Stack.Screen
-        name={RootNames.DevUISafeSvgMedia}
-        component={DevUISafeSvgMedia}
-        options={mergeScreenOptions2024([
-          {
-            headerShown: true,
-            headerTitle: 'Safe SVG Media',
-            title: 'Safe SVG Media',
-          },
-        ])}
       />
       <Stack.Screen
         name={RootNames.DevUIScreenContainerShowCase}

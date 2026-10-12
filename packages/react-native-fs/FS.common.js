@@ -476,44 +476,6 @@ var RNFS = {
     return !!global.__RabbyNativeFS || installNativeFS();
   },
 
-  isSafeSvgRasterizationAvailable(): boolean {
-    return (
-      installNativeFS() &&
-      typeof global.__RabbyNativeFS?.resolveSvg === 'function'
-    );
-  },
-
-  resolveSvg(options: {
-    url: string,
-    variant?: 'thumbnail' | 'detail',
-  }): Promise<
-    | {
-        status: 'ready',
-        uri: string,
-        width: number,
-        height: number,
-        cacheHit: boolean,
-      }
-    | { status: 'failed', reason: string },
-  > {
-    const nativeFS = getNativeFS();
-    if (typeof nativeFS.resolveSvg !== 'function') {
-      return Promise.resolve({
-        status: 'failed',
-        reason: 'native_unavailable',
-      });
-    }
-    return nativeFS.resolveSvg(options);
-  },
-
-  clearSafeSvgCache(): Promise<void> {
-    if (!installNativeFS()) {
-      return Promise.resolve();
-    }
-    const clearCache = global.__RabbyNativeFS?.clearSafeSvgCache;
-    return typeof clearCache === 'function' ? clearCache() : Promise.resolve();
-  },
-
   readFileBytes(filepath: string): Uint8Array {
     return getNativeFS().readFileBytes(normalizeFilePath(filepath));
   },
@@ -558,9 +520,7 @@ var RNFS = {
 
   createWriteStream(
     filepath: string,
-    optionsOrBufferSize?:
-      | { bufferSize?: number, bufferCount?: number }
-      | number,
+    optionsOrBufferSize?: { bufferSize?: number, bufferCount?: number } | number,
     legacyBufferCount?: number,
   ) {
     return createNativeWriteStream(
@@ -575,7 +535,11 @@ var RNFS = {
     bufferSize: number = 256 * 1024,
     bufferCount: number = 2,
   ) {
-    return createNativeWriteStream(filepath, bufferSize, bufferCount);
+    return createNativeWriteStream(
+      filepath,
+      bufferSize,
+      bufferCount,
+    );
   },
 
   isNativeAsyncFileIOAvailable(): boolean {
@@ -590,9 +554,7 @@ var RNFS = {
 
   createAsyncWriteStream(
     filepath: string,
-    optionsOrBufferSize?:
-      | { bufferSize?: number, bufferCount?: number }
-      | number,
+    optionsOrBufferSize?: { bufferSize?: number, bufferCount?: number } | number,
     legacyBufferCount?: number,
   ) {
     return createNativeAsyncWriteStream(

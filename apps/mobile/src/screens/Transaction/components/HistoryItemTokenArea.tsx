@@ -46,8 +46,12 @@ const Avatar = ({
         <Media
           failedPlaceholder={<IconDefaultNFT width={size} height={size} />}
           type={item?.token?.content_type || 'image_url'}
-          src={item?.token?.content}
-          thumbnail={item?.token?.content}
+          src={
+            item?.token?.content?.endsWith('.svg') ? '' : item?.token?.content
+          }
+          thumbnail={
+            item?.token?.content?.endsWith('.svg') ? '' : item?.token?.content
+          }
           mediaStyle={{
             width: size,
             height: size,

@@ -137,9 +137,8 @@ export default function ModalPreviewNFTItem({
           <Media
             failedPlaceholder={<IconDefaultNFT width="100%" height="100%" />}
             type={nft?.content_type}
-            src={nft?.content}
-            thumbnail={nft?.content}
-            safeSvgVariant="detail"
+            src={nft?.content?.endsWith('.svg') ? '' : nft?.content}
+            thumbnail={nft?.content?.endsWith('.svg') ? '' : nft?.content}
             style={styles.media}
             mediaStyle={styles.media}
           />
